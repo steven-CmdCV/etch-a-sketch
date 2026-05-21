@@ -30,7 +30,7 @@ container.style.height = "960px";
 
 generateGrid(16);
 
-// User Prompt
+// User prompt
 const body = document.querySelector("body");
 const btnPrompt = document.createElement("button");
 btnPrompt.textContent = "Chooose grid size";
@@ -38,11 +38,28 @@ btnPrompt.textContent = "Chooose grid size";
 body.insertBefore(btnPrompt, body.firstChild);
 
 btnPrompt.addEventListener("click", () => {
+  const cells = container.querySelectorAll("div");
+
   const numCells = +prompt(
     "Type the number of squares you would like per side (max. 100):",
   );
-  const cells = container.querySelectorAll("div");
 
-  cells.forEach((cell) => cell.remove());
-  generateGrid(numCells);
+  if (numCells <= 100) {
+    cells.forEach((cell) => cell.remove());
+    generateGrid(numCells);
+  } else {
+    // Make sure another warning message is not generated
+    const retryExists = document.getElementsByClassName("warning");
+    if (retryExists.length >= 1) return;
+
+    // I there's no warning message, generate one
+    const retryStrong = document.createElement("strong");
+    retryStrong.classList.add("warning");
+
+    retryStrong.textContent =
+      "The maximum grid size is 100! Please choose a different number.";
+
+    body.insertBefore(retryStrong, container);
+    return;
+  }
 });
