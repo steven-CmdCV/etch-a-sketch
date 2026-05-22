@@ -35,7 +35,7 @@ const body = document.querySelector("body");
 const btnPrompt = document.createElement("button");
 btnPrompt.textContent = "Chooose grid size";
 
-body.insertBefore(btnPrompt, body.firstChild);
+body.insertBefore(btnPrompt, container);
 
 btnPrompt.addEventListener("click", () => {
   const cells = container.querySelectorAll("div");
@@ -44,20 +44,25 @@ btnPrompt.addEventListener("click", () => {
     "Type the number of squares you would like per side (max. 100):",
   );
 
-  if (numCells <= 100) {
+  if (numCells > 0 && numCells <= 100) {
+    // Remove warning message if one was previously present
+    const retryExists = document.getElementsByClassName("warning");
+    if (retryExists.length > 0) {
+      Array.from(retryExists).forEach((retryMsg) => retryMsg.remove());
+    }
+
     cells.forEach((cell) => cell.remove());
     generateGrid(numCells);
   } else {
-    // Make sure another warning message is not generated
+    // Make sure another warning message is not generated (if one already exists)
     const retryExists = document.getElementsByClassName("warning");
-    if (retryExists.length >= 1) return;
+    if (retryExists.length > 0) return;
 
-    // I there's no warning message, generate one
+    // If there's no warning message, generate one
     const retryStrong = document.createElement("strong");
     retryStrong.classList.add("warning");
 
-    retryStrong.textContent =
-      "The maximum grid size is 100! Please choose a different number.";
+    retryStrong.textContent = "Please choose a valid grid size (1 - 100).";
 
     body.insertBefore(retryStrong, container);
     return;
