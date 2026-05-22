@@ -1,3 +1,8 @@
+function getRandNum(min, max) {
+  // Generate random number between min (inclusive) and max (inclusive)
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
 function generateGrid(numCells) {
   // Set individual cell size
   const cellWidth = +container.style.width.replace("px", "") / numCells;
@@ -14,11 +19,15 @@ function generateGrid(numCells) {
     }
   }
 
-  // Add pixelated trail effect
+  // Add pixelated trail effect with random color effect
   const cells = container.querySelectorAll("div");
   cells.forEach((cell) => {
     cell.addEventListener("mouseenter", () => {
-      cell.style.backgroundColor = "yellow";
+      const randRed = getRandNum(0, 255);
+      const randGreen = getRandNum(0, 255);
+      const randBlue = getRandNum(0, 255);
+
+      cell.style.backgroundColor = `rgb(${randRed}, ${randGreen}, ${randBlue})`;
     });
   });
 }
@@ -45,7 +54,7 @@ btnPrompt.addEventListener("click", () => {
   );
 
   if (numCells > 0 && numCells <= 100) {
-    // Remove warning message if one was previously present
+    // Remove warning message if one already exists
     const retryExists = document.getElementsByClassName("warning");
     if (retryExists.length > 0) {
       Array.from(retryExists).forEach((retryMsg) => retryMsg.remove());
@@ -61,10 +70,8 @@ btnPrompt.addEventListener("click", () => {
     // If there's no warning message, generate one
     const retryStrong = document.createElement("strong");
     retryStrong.classList.add("warning");
-
     retryStrong.textContent = "Please choose a valid grid size (1 - 100).";
 
     body.insertBefore(retryStrong, container);
-    return;
   }
 });
