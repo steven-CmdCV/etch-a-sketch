@@ -14,20 +14,28 @@ function generateGrid(numCells) {
       const cell = document.createElement("div");
       cell.style.width = `${cellWidth}px`;
       cell.style.height = `${cellHeight}px`;
-      cell.textContent = `${row + 1}`;
+      //cell.textContent = `${row + 1}`;
       container.appendChild(cell);
     }
   }
 
-  // Add pixelated trail effect with random color effect
   const cells = container.querySelectorAll("div");
   cells.forEach((cell) => {
+    let opacityValue = 0;
+    cell.style.opacity = `${opacityValue}%`;
+
     cell.addEventListener("mouseenter", () => {
+      // Add pixelated trail effect with random color effect
       const randRed = getRandNum(0, 255);
       const randGreen = getRandNum(0, 255);
       const randBlue = getRandNum(0, 255);
 
       cell.style.backgroundColor = `rgb(${randRed}, ${randGreen}, ${randBlue})`;
+
+      // Add darkening effect with every interaction
+      if (opacityValue >= 100) return;
+      opacityValue += 10;
+      cell.style.opacity = `${opacityValue}%`;
     });
   });
 }
