@@ -5,8 +5,8 @@ function getRandNum(min, max) {
 
 function generateGrid(numCells) {
   // Set individual cell size
-  const cellWidth = +container.style.width.replace("px", "") / numCells;
-  const cellHeight = +container.style.height.replace("px", "") / numCells;
+  const cellWidth = +(container.style.width.replace("px", "") / numCells) - 2; // (-2): Account for cell borders
+  const cellHeight = +(container.style.height.replace("px", "") / numCells) - 2; // (-2): Account for cell borders
 
   // Generate grid
   for (let column = 0; column < numCells; column++) {
@@ -14,14 +14,13 @@ function generateGrid(numCells) {
       const cell = document.createElement("div");
       cell.style.width = `${cellWidth}px`;
       cell.style.height = `${cellHeight}px`;
-      //cell.textContent = `${row + 1}`;
       container.appendChild(cell);
     }
   }
 
   const cells = container.querySelectorAll("div");
   cells.forEach((cell) => {
-    let opacityValue = 0;
+    let opacityValue = 100;
     cell.style.opacity = `${opacityValue}%`;
 
     cell.addEventListener("mouseenter", () => {
@@ -31,19 +30,14 @@ function generateGrid(numCells) {
       const randBlue = getRandNum(0, 255);
 
       cell.style.backgroundColor = `rgb(${randRed}, ${randGreen}, ${randBlue})`;
-
-      // Add darkening effect with every interaction
-      if (opacityValue >= 100) return;
-      opacityValue += 10;
-      cell.style.opacity = `${opacityValue}%`;
     });
   });
 }
 
 // Create default 16 x 16 grid
 const container = document.getElementById("container");
-container.style.width = "960px";
-container.style.height = "960px";
+container.style.width = "950px";
+container.style.height = "950px";
 
 generateGrid(16);
 
